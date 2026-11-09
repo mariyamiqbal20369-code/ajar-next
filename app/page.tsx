@@ -1,41 +1,44 @@
+
 'use client';
-import { useState, useRef } from "react";
 
-export default function Test() {
-  const [seconds, setSeconds] = useState(0);
+import { useState } from "react";
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+export default function Test(){
+  const [students, setStudents] = useState([
+    {id:0, name:"Tayyaba", semester:6},
+      {id:1, name:"kinza", semester:7},
+        {id:2, name:"Esha", semester:7},
+          {id:3, name:"sana", semester:6},
+          {id:4, name:"Musa", semester:6}
+  ])
+  const promoteStudent = (index: number) => {
+    console.log(index);
+    setStudents((previous) => previous.map((student) => student.id == index ?{
+    ...student, semester: student.semester + 1
+    }  : student));
+  }
+  return(
+    <main className="bg-cyan-400 p-9">
+{
+  students.map((student, index) => {
+    return(<>
+    <div className="border p-4 m-4">
+    <h2>Student Roll no: { student.id }</h2>
+    <h2>Student Name: { student.name }</h2>
+    <h2>Student Semester: { student.semester }</h2>
+    <button onClick={() => promoteStudent(index)}
+  
+    className="bg-amber-300 text-green-700 px-3 py-2 mt-2 font-bold">Promote Student</button>
+    
+    </div>
+    
+    </>
 
-  const startTimer = () => {
-    if (timerRef.current !== null) return;
-    timerRef.current = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-  };
+    )
+  })
+}
 
-  const stopTimer = () => {
-    if (timerRef.current !== null) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
-  const resetTimer = () => {
-    setSeconds(0);
-    stopTimer();
-  };
-
-  return (
-    <main className="p-10 text-center">
-      <h1 className="text-3xl font-bold">
-        Seconds { seconds }
-      </h1>
-
-      <div className="flex gap-3 justify-center mt-5">
-        <button onClick={() => startTimer()} className="bg-green-800 text-white p-2">Start</button>
-        <button onClick={() => stopTimer()} className="bg-orange-800 text-white p-2">Stop</button>
-        <button onClick={() => resetTimer()} className="bg-red-800 text-white p-2">Reset</button>
-      </div>
     </main>
+
   );
 }
